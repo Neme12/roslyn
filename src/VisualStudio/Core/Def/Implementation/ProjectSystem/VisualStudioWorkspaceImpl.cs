@@ -362,23 +362,27 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             string newVersion = parseOptionsService.GetLanguageVersion(options);
 
             GetProjectData(projectId, out var hostProject, out var hierarchy, out var project);
-            foreach (Configuration configuration in project.ConfigurationManager)
-            {
-                switch (hostProject.Language)
-                {
-                    case LanguageNames.CSharp:
-                        var csharpProperties = (VSLangProj80.CSharpProjectConfigurationProperties3)configuration.Object;
+            var storage = (IVsBuildPropertyStorage)hierarchy;
 
-                        if (newVersion != csharpProperties.LanguageVersion)
-                        {
-                            csharpProperties.LanguageVersion = newVersion;
-                        }
-                        break;
+            storage.SetPropertyValue("LangVersion", null, (uint)_PersistStorageType.PST_PROJECT_FILE, newVersion);
 
-                    case LanguageNames.VisualBasic:
-                        throw new InvalidOperationException(ServicesVSResources.This_workspace_does_not_support_updating_Visual_Basic_parse_options);
-                }
-            }
+            //foreach (Configuration configuration in project.ConfigurationManager)
+            //{
+            //    switch (hostProject.Language)
+            //    {
+            //        case LanguageNames.CSharp:
+            //            var csharpProperties = (VSLangProj80.CSharpProjectConfigurationProperties3)configuration.Object;
+
+            //            if (newVersion != csharpProperties.LanguageVersion)
+            //            {
+            //                csharpProperties.LanguageVersion = newVersion;
+            //            }
+            //            break;
+
+            //        case LanguageNames.VisualBasic:
+            //            throw new InvalidOperationException(ServicesVSResources.This_workspace_does_not_support_updating_Visual_Basic_parse_options);
+            //    }
+            //}
         }
 
         protected override void ApplyAnalyzerReferenceAdded(ProjectId projectId, AnalyzerReference analyzerReference)
