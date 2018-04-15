@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(TypeKind.Class)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(TypeKind.Class)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(SymbolKind.Method)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(SymbolKind.Method)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(SymbolKind.Parameter)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(SymbolKind.Parameter)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -134,7 +134,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(SymbolKind.Property)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(SymbolKind.Property)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(TypeKind.Interface)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(TypeKind.Interface)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
