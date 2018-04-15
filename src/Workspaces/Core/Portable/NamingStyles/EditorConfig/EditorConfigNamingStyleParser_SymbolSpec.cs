@@ -67,12 +67,14 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
         private static readonly SymbolOrTypeOrMethodKind _interface = new SymbolOrTypeOrMethodKind(TypeKind.Interface);
         private static readonly SymbolOrTypeOrMethodKind _enum = new SymbolOrTypeOrMethodKind(TypeKind.Enum);
         private static readonly SymbolOrTypeOrMethodKind _property = new SymbolOrTypeOrMethodKind(SymbolKind.Property);
-        private static readonly SymbolOrTypeOrMethodKind _method = new SymbolOrTypeOrMethodKind(SymbolKind.Method);
+        private static readonly SymbolOrTypeOrMethodKind _method = new SymbolOrTypeOrMethodKind(MethodKind.Ordinary);
+        private static readonly SymbolOrTypeOrMethodKind _localFunction = new SymbolOrTypeOrMethodKind(MethodKind.LocalFunction);
         private static readonly SymbolOrTypeOrMethodKind _field = new SymbolOrTypeOrMethodKind(SymbolKind.Field);
         private static readonly SymbolOrTypeOrMethodKind _event = new SymbolOrTypeOrMethodKind(SymbolKind.Event);
         private static readonly SymbolOrTypeOrMethodKind _delegate = new SymbolOrTypeOrMethodKind(TypeKind.Delegate);
         private static readonly SymbolOrTypeOrMethodKind _parameter = new SymbolOrTypeOrMethodKind(SymbolKind.Parameter);
-        private static readonly ImmutableArray<SymbolOrTypeOrMethodKind> _all = ImmutableArray.Create(_class, _struct, _interface, _enum, _property, _method, _field, _event, _delegate, _parameter);
+        private static readonly ImmutableArray<SymbolOrTypeOrMethodKind> _all =
+            ImmutableArray.Create(_class, _struct, _interface, _enum, _property, _method, _localFunction, _field, _event, _delegate, _parameter);
         private static ImmutableArray<SymbolOrTypeOrMethodKind> ParseSymbolKindList(string symbolSpecApplicableKinds)
         {
             if (symbolSpecApplicableKinds == null)
@@ -107,6 +109,9 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
                         break;
                     case "method":
                         builder.Add(_method);
+                        break;
+                    case "local_function":
+                        builder.Add(_localFunction);
                         break;
                     case "field":
                         builder.Add(_field);
