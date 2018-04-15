@@ -75,6 +75,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
         private static readonly SymbolOrTypeOrMethodKind _parameter = new SymbolOrTypeOrMethodKind(SymbolKind.Parameter);
         private static readonly ImmutableArray<SymbolOrTypeOrMethodKind> _all =
             ImmutableArray.Create(_class, _struct, _interface, _enum, _property, _method, _localFunction, _field, _event, _delegate, _parameter);
+
         private static ImmutableArray<SymbolOrTypeOrMethodKind> ParseSymbolKindList(string symbolSpecApplicableKinds)
         {
             if (symbolSpecApplicableKinds == null)

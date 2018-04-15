@@ -21,6 +21,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
         private IDictionary<OptionKey, object> ParameterNamesAreCamelCase =>
             Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), ParameterNamesAreCamelCaseOption());
 
+        private IDictionary<OptionKey, object> LocalFunctionNamesAreCamelCase =>
+            Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), LocalFunctionNamesAreCamelCaseOption());
+
         private IDictionary<OptionKey, object> PropertyNamesArePascalCase =>
             Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), PropertyNamesArePascalCaseOption());
 
@@ -71,7 +74,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(SymbolKind.Method)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(MethodKind.Ordinary)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -103,6 +106,38 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
                 null,
                 "Name",
                 ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(SymbolKind.Parameter)),
+                ImmutableArray<Accessibility>.Empty,
+                ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
+
+            var namingStyle = new NamingStyle(
+                Guid.NewGuid(),
+                capitalizationScheme: Capitalization.CamelCase,
+                name: "Name",
+                prefix: "",
+                suffix: "",
+                wordSeparator: "");
+
+            var namingRule = new SerializableNamingRule()
+            {
+                SymbolSpecificationID = symbolSpecification.ID,
+                NamingStyleID = namingStyle.ID,
+                EnforcementLevel = DiagnosticSeverity.Error
+            };
+
+            var info = new NamingStylePreferences(
+                ImmutableArray.Create(symbolSpecification),
+                ImmutableArray.Create(namingStyle),
+                ImmutableArray.Create(namingRule));
+
+            return info;
+        }
+
+        private NamingStylePreferences LocalFunctionNamesAreCamelCaseOption()
+        {
+            var symbolSpecification = new SymbolSpecification(
+                null,
+                "Name",
+                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(MethodKind.LocalFunction)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 

@@ -110,6 +110,21 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.NamingStyle)]
+        public async Task TestPascalCaseMethod_LocalFunctionIsIgnored()
+        {
+            await TestMissingInRegularAndScriptAsync(
+@"class C
+{
+    void M()
+    {
+        void [|f|]()
+        {
+        }
+    }
+}", new TestParameters(options: MethodNamesArePascalCase));
+        }
+
+        [Fact, Trait(Traits.Feature, Traits.Features.NamingStyle)]
         public async Task TestCamelCaseParameters()
         {
             await TestInRegularAndScriptAsync(
@@ -127,7 +142,44 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
 }",
                 options: ParameterNamesAreCamelCase);
 		}
-		
+
+        [Fact, Trait(Traits.Feature, Traits.Features.NamingStyle)]
+        public async Task TestCamelCaseLocalFunctions()
+        {
+            await TestInRegularAndScriptAsync(
+@"class C
+{
+    void M()
+    {
+        void [|F|]()
+        {
+        }
+    }
+}",
+@"class C
+{
+    void M()
+    {
+        void f()
+        {
+        }
+    }
+}",
+                options: LocalFunctionNamesAreCamelCase);
+        }
+
+        [Fact, Trait(Traits.Feature, Traits.Features.NamingStyle)]
+        public async Task TestCamelCaseLocalFunctions_MethodIsIgnored()
+        {
+            await TestMissingInRegularAndScriptAsync(
+@"class C
+{
+    void [|M|]()
+    {
+    }
+}", new TestParameters(options: LocalFunctionNamesAreCamelCase));
+        }
+
         [Fact, Trait(Traits.Feature, Traits.Features.NamingStyle)]
         public async Task TestPascalCaseMethod_InInterfaceWithImplicitImplementation()
         {
