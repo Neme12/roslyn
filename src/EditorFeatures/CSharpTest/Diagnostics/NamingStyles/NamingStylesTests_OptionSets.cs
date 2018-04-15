@@ -30,6 +30,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
         private IDictionary<OptionKey, object> InterfaceNamesStartWithI =>
             Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), InterfacesNamesStartWithIOption());
 
+        private IDictionary<OptionKey, object> AsyncFunctionNamesEndWithAsync =>
+            Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), AsyncFunctionNamesEndWithAsyncOption());
+
         private IDictionary<OptionKey, object> Options(OptionKey option, object value)
         {
             var options = new Dictionary<OptionKey, object>
@@ -211,6 +214,40 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
                 name: "Name",
                 prefix: "I",
                 suffix: "",
+                wordSeparator: "");
+
+            var namingRule = new SerializableNamingRule()
+            {
+                SymbolSpecificationID = symbolSpecification.ID,
+                NamingStyleID = namingStyle.ID,
+                EnforcementLevel = DiagnosticSeverity.Error
+            };
+
+            var info = new NamingStylePreferences(
+                ImmutableArray.Create(symbolSpecification),
+                ImmutableArray.Create(namingStyle),
+                ImmutableArray.Create(namingRule));
+
+            return info;
+        }
+
+        private NamingStylePreferences AsyncFunctionNamesEndWithAsyncOption()
+        {
+            var symbolSpecification = new SymbolSpecification(
+                null,
+                "Name",
+                ImmutableArray.Create(
+                    new SymbolSpecification.SymbolOrTypeOrMethodKind(MethodKind.Ordinary),
+                    new SymbolSpecification.SymbolOrTypeOrMethodKind(MethodKind.LocalFunction)),
+                ImmutableArray<Accessibility>.Empty,
+                ImmutableArray.Create(new SymbolSpecification.ModifierKind(SymbolSpecification.ModifierKindEnum.IsAsync)));
+
+            var namingStyle = new NamingStyle(
+                Guid.NewGuid(),
+                capitalizationScheme: Capitalization.PascalCase,
+                name: "Name",
+                prefix: "",
+                suffix: "Async",
                 wordSeparator: "");
 
             var namingRule = new SerializableNamingRule()

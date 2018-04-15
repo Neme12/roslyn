@@ -181,6 +181,80 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.NamingStyle)]
+        public async Task TestAsyncFunctions_AsyncMethod()
+        {
+            await TestInRegularAndScriptAsync(
+@"class C
+{
+    async void [|M|]()
+    {
+    }
+}",
+@"class C
+{
+    async void MAsync()
+    {
+    }
+}",
+                options: AsyncFunctionNamesEndWithAsync);
+        }
+
+        [Fact, Trait(Traits.Feature, Traits.Features.NamingStyle)]
+        public async Task TestAsyncFunctions_AsyncLocalFunction()
+        {
+            await TestInRegularAndScriptAsync(
+@"class C
+{
+    void M()
+    {
+        async void [|F|]()
+        {
+        }
+    }
+}",
+@"class C
+{
+    void M()
+    {
+        async void FAsync()
+        {
+        }
+    }
+}",
+                options: AsyncFunctionNamesEndWithAsync);
+        }
+
+        [Fact, Trait(Traits.Feature, Traits.Features.NamingStyle)]
+        public async Task TestAsyncFunctions_NonAsyncMethodIgnored()
+        {
+            await TestMissingInRegularAndScriptAsync(
+@"class C
+{
+    void [|M|]()
+    {
+        async void F()
+        {
+        }
+    }
+}", new TestParameters(options: AsyncFunctionNamesEndWithAsync));
+        }
+
+        [Fact, Trait(Traits.Feature, Traits.Features.NamingStyle)]
+        public async Task TestAsyncFunctions_NonAsyncLocalFunctionIgnored()
+        {
+            await TestMissingInRegularAndScriptAsync(
+@"class C
+{
+    async void M()
+    {
+        void [|F|]()
+        {
+        }
+    }
+}", new TestParameters(options: AsyncFunctionNamesEndWithAsync));
+        }
+
+        [Fact, Trait(Traits.Feature, Traits.Features.NamingStyle)]
         public async Task TestPascalCaseMethod_InInterfaceWithImplicitImplementation()
         {
             await TestInRegularAndScriptAsync(
