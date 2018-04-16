@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.Test.Utilities;
 using Roslyn.Test.Utilities;
 using Xunit;
 using static Microsoft.CodeAnalysis.CSharp.Completion.Providers.DeclarationNameCompletionProvider;
+using static Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles.SymbolSpecification;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.DeclarationInfoTests
 {
@@ -24,7 +25,10 @@ class C
     int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Field),
+                new SymbolOrTypeOrMethodKind(SymbolKind.Property),
+                new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
             await VerifyNoModifiers(markup);
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -39,7 +43,10 @@ class C
     public int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Field),
+                new SymbolOrTypeOrMethodKind(SymbolKind.Property),
+                new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
             await VerifyNoModifiers(markup);
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.Public);
@@ -54,7 +61,9 @@ class C
     public virtual int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Method, SymbolKind.Property);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Property),
+                new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
             await VerifyModifiers(markup, new DeclarationModifiers(isVirtual: true));
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.Public);
@@ -69,7 +78,10 @@ class C
     private static int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Field),
+                new SymbolOrTypeOrMethodKind(SymbolKind.Property),
+                new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
             await VerifyModifiers(markup, new DeclarationModifiers(isStatic: true));
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.Private);
@@ -84,7 +96,8 @@ class C
     private const int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Field);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Field));
             await VerifyModifiers(markup, new DeclarationModifiers(isConst: true));
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.Private);
@@ -102,7 +115,9 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Local),
+                new SymbolOrTypeOrMethodKind(MethodKind.LocalFunction));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -120,7 +135,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Local));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -138,7 +154,9 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Local),
+                new SymbolOrTypeOrMethodKind(MethodKind.LocalFunction));
             await VerifyModifiers(markup, new DeclarationModifiers(isReadOnly: true));
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -156,7 +174,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Local));
             await VerifyModifiers(markup, new DeclarationModifiers(isReadOnly: true));
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -172,7 +191,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Parameter);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Parameter));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "global::C");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -188,7 +208,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Parameter);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Parameter));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "global::C");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -204,7 +225,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Parameter);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Parameter));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "string");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -220,7 +242,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Parameter);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Parameter));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "string");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -237,7 +260,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Parameter);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Parameter));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "global::System.Collections.Generic.List<string>");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -251,7 +275,8 @@ class C<$$
 {
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.TypeParameter);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.TypeParameter));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -262,7 +287,8 @@ class C<T1, $$
 {
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.TypeParameter);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.TypeParameter));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -274,7 +300,8 @@ class C
     readonly int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Field);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Field));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -286,7 +313,8 @@ class C
     const int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Field);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Field));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -298,7 +326,9 @@ class C
     abstract int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Method, SymbolKind.Property);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Property),
+                new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -310,7 +340,9 @@ class C
     virtual int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Method, SymbolKind.Property);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Property),
+                new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -322,7 +354,9 @@ class C
     sealed int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Method, SymbolKind.Property);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Property),
+                new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -334,7 +368,9 @@ class C
     override int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Method, SymbolKind.Property);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Property),
+                new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -346,7 +382,8 @@ class C
     async int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Method);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -359,7 +396,10 @@ class C
     partial int $$
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Field),
+                new SymbolOrTypeOrMethodKind(SymbolKind.Property),
+                new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -377,7 +417,9 @@ namespace ConsoleApp1
         }
     }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Local),
+                new SymbolOrTypeOrMethodKind(MethodKind.LocalFunction));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -395,7 +437,9 @@ namespace ConsoleApp1
         }
     }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Local),
+                new SymbolOrTypeOrMethodKind(MethodKind.LocalFunction));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -413,7 +457,9 @@ namespace ConsoleApp1
         }
     }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Local),
+                new SymbolOrTypeOrMethodKind(MethodKind.LocalFunction));
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
@@ -430,7 +476,9 @@ namespace ConsoleApp1
         }
     }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolOrTypeOrMethodKind(SymbolKind.Local),
+                new SymbolOrTypeOrMethodKind(MethodKind.LocalFunction));
         }
 
         private async Task VerifyNoType(string markup)
@@ -451,7 +499,7 @@ namespace ConsoleApp1
             Assert.Equal(default(DeclarationModifiers), result.Modifiers);
         }
 
-        private async Task VerifySymbolKinds(string markup, params SymbolKind[] expectedSymbolKinds)
+        private async Task VerifySymbolKinds(string markup, params SymbolOrTypeOrMethodKind[] expectedSymbolKinds)
         {
             var result = await GetResultsAsync(markup);
             Assert.True(expectedSymbolKinds.SequenceEqual(result.PossibleSymbolKinds));
