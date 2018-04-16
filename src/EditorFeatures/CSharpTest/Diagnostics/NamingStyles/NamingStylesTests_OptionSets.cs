@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(TypeKind.Class)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(TypeKind.Class)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(MethodKind.Ordinary)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(MethodKind.Ordinary)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -108,7 +108,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(SymbolKind.Parameter)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(SymbolKind.Parameter)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -140,7 +140,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(MethodKind.LocalFunction)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(MethodKind.LocalFunction)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -172,7 +172,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(SymbolKind.Property)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(SymbolKind.Property)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -204,7 +204,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             var symbolSpecification = new SymbolSpecification(
                 null,
                 "Name",
-                ImmutableArray.Create(new SymbolSpecification.SymbolOrTypeOrMethodKind(TypeKind.Interface)),
+                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(TypeKind.Interface)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -237,8 +237,8 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
                 null,
                 "Name",
                 ImmutableArray.Create(
-                    new SymbolSpecification.SymbolOrTypeOrMethodKind(MethodKind.Ordinary),
-                    new SymbolSpecification.SymbolOrTypeOrMethodKind(MethodKind.LocalFunction)),
+                    new SymbolSpecification.SymbolKindOrTypeKind(MethodKind.Ordinary),
+                    new SymbolSpecification.SymbolKindOrTypeKind(MethodKind.LocalFunction)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray.Create(new SymbolSpecification.ModifierKind(SymbolSpecification.ModifierKindEnum.IsAsync)));
 

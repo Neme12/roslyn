@@ -17,11 +17,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
     {
         internal struct NameDeclarationInfo
         {
-            private static readonly ImmutableArray<SymbolOrTypeOrMethodKind> s_parameterSyntaxKind =
-                ImmutableArray.Create(new SymbolOrTypeOrMethodKind(SymbolKind.Parameter));
+            private static readonly ImmutableArray<SymbolKindOrTypeKind> s_parameterSyntaxKind =
+                ImmutableArray.Create(new SymbolKindOrTypeKind(SymbolKind.Parameter));
 
             public NameDeclarationInfo(
-                ImmutableArray<SymbolOrTypeOrMethodKind> possibleSymbolKinds,
+                ImmutableArray<SymbolKindOrTypeKind> possibleSymbolKinds,
                 Accessibility accessibility,
                 DeclarationModifiers declarationModifiers,
                 ITypeSymbol type,
@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 Alias = alias;
             }
 
-            public ImmutableArray<SymbolOrTypeOrMethodKind> PossibleSymbolKinds { get; }
+            public ImmutableArray<SymbolKindOrTypeKind> PossibleSymbolKinds { get; }
             public DeclarationModifiers Modifiers { get; }
             public ITypeSymbol Type { get; }
             public IAliasSymbol Alias { get; }
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 if (type != null)
                 {
                     result = new NameDeclarationInfo(
-                        ImmutableArray.Create(new SymbolOrTypeOrMethodKind(SymbolKind.Local)),
+                        ImmutableArray.Create(new SymbolKindOrTypeKind(SymbolKind.Local)),
                         Accessibility.NotApplicable,
                         new DeclarationModifiers(),
                         type,
@@ -108,8 +108,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     e => e.Expression,
                     _ => default,
                     _ => ImmutableArray.Create(
-                        new SymbolOrTypeOrMethodKind(SymbolKind.Local),
-                        new SymbolOrTypeOrMethodKind(MethodKind.LocalFunction)),
+                        new SymbolKindOrTypeKind(SymbolKind.Local),
+                        new SymbolKindOrTypeKind(MethodKind.LocalFunction)),
                     cancellationToken);
                 return result.Type != null;
             }
@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 SemanticModel semanticModel,
                 Func<TSyntaxNode, SyntaxNode> typeSyntaxGetter,
                 Func<TSyntaxNode, SyntaxTokenList?> modifierGetter,
-                Func<DeclarationModifiers, ImmutableArray<SymbolOrTypeOrMethodKind>> possibleDeclarationComputer,
+                Func<DeclarationModifiers, ImmutableArray<SymbolKindOrTypeKind>> possibleDeclarationComputer,
                 CancellationToken cancellationToken) where TSyntaxNode : SyntaxNode
             {
                 if (!IsPossibleTypeToken(token) && !token.IsKind(SyntaxKind.CommaToken))
@@ -199,7 +199,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 SemanticModel semanticModel,
                 Func<TSyntaxNode, SyntaxNode> typeSyntaxGetter,
                 Func<TSyntaxNode, SyntaxTokenList> modifierGetter,
-                Func<DeclarationModifiers, ImmutableArray<SymbolOrTypeOrMethodKind>> possibleDeclarationComputer,
+                Func<DeclarationModifiers, ImmutableArray<SymbolKindOrTypeKind>> possibleDeclarationComputer,
                 CancellationToken cancellationToken) where TSyntaxNode : SyntaxNode
             {
                 if (!IsPossibleTypeToken(token))
@@ -261,15 +261,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                      cancellationToken);
                 return result.Type != null;
 
-                ImmutableArray<SymbolOrTypeOrMethodKind> GetPossibleKinds()
+                ImmutableArray<SymbolKindOrTypeKind> GetPossibleKinds()
                 {
                     // If we only have a type, this can still end up being a local function.
                     return token.IsKind(SyntaxKind.CommaToken)
                         ? ImmutableArray.Create(
-                            new SymbolOrTypeOrMethodKind(SymbolKind.Local))
+                            new SymbolKindOrTypeKind(SymbolKind.Local))
                         : ImmutableArray.Create(
-                            new SymbolOrTypeOrMethodKind(SymbolKind.Local),
-                            new SymbolOrTypeOrMethodKind(MethodKind.LocalFunction));
+                            new SymbolKindOrTypeKind(SymbolKind.Local),
+                            new SymbolKindOrTypeKind(MethodKind.LocalFunction));
                 }
             }
 
@@ -280,7 +280,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     token.Parent.IsKind(SyntaxKind.TypeParameterList))
                 {
                     result = new NameDeclarationInfo(
-                        ImmutableArray.Create(new SymbolOrTypeOrMethodKind(SymbolKind.TypeParameter)),
+                        ImmutableArray.Create(new SymbolKindOrTypeKind(SymbolKind.TypeParameter)),
                         Accessibility.NotApplicable,
                         new DeclarationModifiers(),
                         type: null,
@@ -347,28 +347,28 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     SyntaxKind.CloseBracketToken)
                 || token.Parent.IsKind(SyntaxKind.PredefinedType);
 
-            private static ImmutableArray<SymbolOrTypeOrMethodKind> GetPossibleMemberDeclarations(DeclarationModifiers modifiers)
+            private static ImmutableArray<SymbolKindOrTypeKind> GetPossibleMemberDeclarations(DeclarationModifiers modifiers)
             {
                 if (modifiers.IsConst || modifiers.IsReadOnly)
                 {
-                    return ImmutableArray.Create(new SymbolOrTypeOrMethodKind(SymbolKind.Field));
+                    return ImmutableArray.Create(new SymbolKindOrTypeKind(SymbolKind.Field));
                 }
 
                 var possibleTypes = ImmutableArray.Create(
-                    new SymbolOrTypeOrMethodKind(SymbolKind.Field),
-                    new SymbolOrTypeOrMethodKind(SymbolKind.Property),
-                    new SymbolOrTypeOrMethodKind(MethodKind.Ordinary));
+                    new SymbolKindOrTypeKind(SymbolKind.Field),
+                    new SymbolKindOrTypeKind(SymbolKind.Property),
+                    new SymbolKindOrTypeKind(MethodKind.Ordinary));
 
                 if (modifiers.IsAbstract || modifiers.IsVirtual || modifiers.IsSealed || modifiers.IsOverride)
                 {
-                    possibleTypes = possibleTypes.Remove(new SymbolOrTypeOrMethodKind(SymbolKind.Field));
+                    possibleTypes = possibleTypes.Remove(new SymbolKindOrTypeKind(SymbolKind.Field));
                 }
 
                 if (modifiers.IsAsync || modifiers.IsPartial)
                 {
                     // Fields and properties cannot be async or partial.
-                    possibleTypes = possibleTypes.Remove(new SymbolOrTypeOrMethodKind(SymbolKind.Field));
-                    possibleTypes = possibleTypes.Remove(new SymbolOrTypeOrMethodKind(SymbolKind.Property));
+                    possibleTypes = possibleTypes.Remove(new SymbolKindOrTypeKind(SymbolKind.Field));
+                    possibleTypes = possibleTypes.Remove(new SymbolKindOrTypeKind(SymbolKind.Property));
                 }
 
                 return possibleTypes;
