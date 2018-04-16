@@ -74,7 +74,18 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
         private static readonly SymbolKindOrTypeKind _delegate = new SymbolKindOrTypeKind(TypeKind.Delegate);
         private static readonly SymbolKindOrTypeKind _parameter = new SymbolKindOrTypeKind(SymbolKind.Parameter);
         private static readonly ImmutableArray<SymbolKindOrTypeKind> _all =
-            ImmutableArray.Create(_class, _struct, _interface, _enum, _property, _method, _localFunction, _field, _event, _delegate, _parameter);
+            ImmutableArray.Create(
+                _class,
+                _struct,
+                _interface,
+                _enum,
+                _property,
+                _method,
+                _localFunction,
+                _field,
+                _event,
+                _delegate,
+                _parameter);
 
         private static ImmutableArray<SymbolKindOrTypeKind> ParseSymbolKindList(string symbolSpecApplicableKinds)
         {
