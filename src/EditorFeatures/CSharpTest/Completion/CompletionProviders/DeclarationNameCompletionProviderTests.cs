@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Completion;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Completion.Providers;
@@ -511,7 +512,7 @@ public class C
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
-        public async void TestDescriptionInsideClass()
+        public async Task TestDescriptionInsideClass()
         {
             var markup = @"
 public class MyClass
@@ -525,7 +526,7 @@ public class MyClass
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
-        public async void TestDescriptionInsideMethod()
+        public async Task TestDescriptionInsideMethod()
         {
             var markup = @"
 public class MyClass
@@ -1050,7 +1051,7 @@ public class Class1
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
-        public async void CustomNamingStyleInsideClass()
+        public async Task CustomNamingStyleInsideClass()
         {
             var workspace = WorkspaceFixture.GetWorkspace();
             var originalOptions = workspace.Options;
@@ -1082,7 +1083,7 @@ class Configuration
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.Completion)]
-        public async void CustomNamingStyleInsideMethod()
+        public async Task CustomNamingStyleInsideMethod()
         {
             var workspace = WorkspaceFixture.GetWorkspace();
             var originalOptions = workspace.Options;
