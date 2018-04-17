@@ -261,6 +261,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                      cancellationToken);
                 return result.Type != null;
 
+                // Local functions
+
                 ImmutableArray<SymbolKindOrTypeKind> GetPossibleKinds()
                 {
                     // If we only have a type, this can still end up being a local function.

@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
         private IDictionary<OptionKey, object> AsyncFunctionNamesEndWithAsync =>
             Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), AsyncFunctionNamesEndWithAsyncOption());
 
-        private IDictionary<OptionKey, object> Options(OptionKey option, object value)
+        private static IDictionary<OptionKey, object> Options(OptionKey option, object value)
         {
             var options = new Dictionary<OptionKey, object>
             {
@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             return options;
         }
 
-        private NamingStylePreferences ClassNamesArePascalCaseOption()
+        private static NamingStylePreferences ClassNamesArePascalCaseOption()
         {
             var symbolSpecification = new SymbolSpecification(
                 null,
@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             return info;
         }
 
-        private NamingStylePreferences MethodNamesArePascalCaseOption()
+        private static NamingStylePreferences MethodNamesArePascalCaseOption()
         {
             var symbolSpecification = new SymbolSpecification(
                 null,
@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             return info;
         }
 
-        private NamingStylePreferences ParameterNamesAreCamelCaseOption()
+        private static NamingStylePreferences ParameterNamesAreCamelCaseOption()
         {
             var symbolSpecification = new SymbolSpecification(
                 null,
@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             return info;
         }
 
-        private NamingStylePreferences LocalFunctionNamesAreCamelCaseOption()
+        private static NamingStylePreferences LocalFunctionNamesAreCamelCaseOption()
         {
             var symbolSpecification = new SymbolSpecification(
                 null,
@@ -167,7 +167,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             return info;
         }
 
-        private NamingStylePreferences PropertyNamesArePascalCaseOption()
+        private static NamingStylePreferences PropertyNamesArePascalCaseOption()
         {
             var symbolSpecification = new SymbolSpecification(
                 null,
@@ -199,7 +199,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             return info;
         }
 
-        private NamingStylePreferences InterfacesNamesStartWithIOption()
+        private static NamingStylePreferences InterfacesNamesStartWithIOption()
         {
             var symbolSpecification = new SymbolSpecification(
                 null,
@@ -231,7 +231,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
             return info;
         }
 
-        private NamingStylePreferences AsyncFunctionNamesEndWithAsyncOption()
+        private static NamingStylePreferences AsyncFunctionNamesEndWithAsyncOption()
         {
             var symbolSpecification = new SymbolSpecification(
                 null,
