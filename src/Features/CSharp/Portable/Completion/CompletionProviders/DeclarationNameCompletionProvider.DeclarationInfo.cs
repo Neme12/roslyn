@@ -257,19 +257,27 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 result = IsFollowingTypeOrComma<VariableDeclarationSyntax>(token, semanticModel,
                      v => v.Type,
                      v => v.Parent is LocalDeclarationStatementSyntax l ? l.Modifiers : default(SyntaxTokenList?),
-                     d => GetPossibleKinds(),
+                     GetPossibleKinds,
                      cancellationToken);
                 return result.Type != null;
 
                 // Local functions
 
-                ImmutableArray<SymbolKindOrTypeKind> GetPossibleKinds()
+                ImmutableArray<SymbolKindOrTypeKind> GetPossibleKinds(DeclarationModifiers modifiers)
                 {
-                    // If we only have a type, this can still end up being a local function.
-                    return token.IsKind(SyntaxKind.CommaToken)
-                        ? ImmutableArray.Create(
-                            new SymbolKindOrTypeKind(SymbolKind.Local))
-                        : ImmutableArray.Create(
+                    if (token.IsKind(SyntaxKind.CommaToken))
+                    {
+                        return ImmutableArray.Create(new SymbolKindOrTypeKind(SymbolKind.Local));
+                    }
+
+                    // If we only have a type, this can still end up being a local function (depending on the modifiers).
+
+                    return
+                        modifiers.IsConst
+                            ? ImmutableArray.Create(new SymbolKindOrTypeKind(SymbolKind.Local)) :
+                        modifiers.IsAsync || modifiers.IsUnsafe
+                            ? ImmutableArray.Create(new SymbolKindOrTypeKind(MethodKind.LocalFunction)) :
+                        ImmutableArray.Create(
                             new SymbolKindOrTypeKind(SymbolKind.Local),
                             new SymbolKindOrTypeKind(MethodKind.LocalFunction));
                 }
