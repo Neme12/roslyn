@@ -299,7 +299,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                         f is ForEachVariableStatementSyntax forEachVariableStatement ? forEachVariableStatement.Variable :
                         null, // Return null to bail out.
                     modifierGetter: f => default,
-                    possibleDeclarationComputer: d => ImmutableArray.Create(SymbolKind.Local),
+                    possibleDeclarationComputer: d => ImmutableArray.Create(new SymbolKindOrTypeKind(SymbolKind.Local)),
                     cancellationToken);
                 return result.Type != null;
             }

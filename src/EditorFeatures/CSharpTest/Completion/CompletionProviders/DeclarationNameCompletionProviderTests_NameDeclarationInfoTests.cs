@@ -193,7 +193,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolKindOrTypeKind(SymbolKind.Local));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -211,7 +212,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolKindOrTypeKind(SymbolKind.Local));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -229,7 +231,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolKindOrTypeKind(SymbolKind.Local));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -247,7 +250,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolKindOrTypeKind(SymbolKind.Local));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
@@ -265,7 +269,8 @@ class C
     }
 }
 ";
-            await VerifySymbolKinds(markup, SymbolKind.Local);
+            await VerifySymbolKinds(markup,
+                new SymbolKindOrTypeKind(SymbolKind.Local));
             await VerifyModifiers(markup, new DeclarationModifiers());
             await VerifyTypeName(markup, "int");
             await VerifyAccessibility(markup, Accessibility.NotApplicable);
