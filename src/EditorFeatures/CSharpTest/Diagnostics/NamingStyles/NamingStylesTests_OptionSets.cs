@@ -21,6 +21,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
         private IDictionary<OptionKey, object> ParameterNamesAreCamelCase =>
             Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), ParameterNamesAreCamelCaseOption());
 
+        private IDictionary<OptionKey, object> LocalNamesAreCamelCase =>
+            Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), LocalNamesAreCamelCaseOption());
+
         private IDictionary<OptionKey, object> LocalFunctionNamesAreCamelCase =>
             Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), LocalFunctionNamesAreCamelCaseOption());
 
@@ -33,13 +36,15 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
         private IDictionary<OptionKey, object> AsyncFunctionNamesEndWithAsync =>
             Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), AsyncFunctionNamesEndWithAsyncOption());
 
+        private IDictionary<OptionKey, object> ConstantsAreUpperCase =>
+            Options(new OptionKey(SimplificationOptions.NamingPreferences, LanguageNames.CSharp), ConstantsAreUpperCaseOption());
+
         private static IDictionary<OptionKey, object> Options(OptionKey option, object value)
         {
-            var options = new Dictionary<OptionKey, object>
+            return new Dictionary<OptionKey, object>
             {
                 { option, value }
             };
-            return options;
         }
 
         private static NamingStylePreferences ClassNamesArePascalCaseOption()
@@ -109,6 +114,38 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
                 null,
                 "Name",
                 ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(SymbolKind.Parameter)),
+                ImmutableArray<Accessibility>.Empty,
+                ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
+
+            var namingStyle = new NamingStyle(
+                Guid.NewGuid(),
+                capitalizationScheme: Capitalization.CamelCase,
+                name: "Name",
+                prefix: "",
+                suffix: "",
+                wordSeparator: "");
+
+            var namingRule = new SerializableNamingRule()
+            {
+                SymbolSpecificationID = symbolSpecification.ID,
+                NamingStyleID = namingStyle.ID,
+                EnforcementLevel = DiagnosticSeverity.Error
+            };
+
+            var info = new NamingStylePreferences(
+                ImmutableArray.Create(symbolSpecification),
+                ImmutableArray.Create(namingStyle),
+                ImmutableArray.Create(namingRule));
+
+            return info;
+        }
+
+        private static NamingStylePreferences LocalNamesAreCamelCaseOption()
+        {
+            var symbolSpecification = new SymbolSpecification(
+                null,
+                "Name",
+                ImmutableArray.Create(new SymbolSpecification.SymbolKindOrTypeKind(SymbolKind.Local)),
                 ImmutableArray<Accessibility>.Empty,
                 ImmutableArray<SymbolSpecification.ModifierKind>.Empty);
 
@@ -248,6 +285,40 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.NamingStyle
                 name: "Name",
                 prefix: "",
                 suffix: "Async",
+                wordSeparator: "");
+
+            var namingRule = new SerializableNamingRule()
+            {
+                SymbolSpecificationID = symbolSpecification.ID,
+                NamingStyleID = namingStyle.ID,
+                EnforcementLevel = DiagnosticSeverity.Error
+            };
+
+            var info = new NamingStylePreferences(
+                ImmutableArray.Create(symbolSpecification),
+                ImmutableArray.Create(namingStyle),
+                ImmutableArray.Create(namingRule));
+
+            return info;
+        }
+
+        private static NamingStylePreferences ConstantsAreUpperCaseOption()
+        {
+            var symbolSpecification = new SymbolSpecification(
+                null,
+                "Name",
+                ImmutableArray.Create(
+                    new SymbolSpecification.SymbolKindOrTypeKind(SymbolKind.Field),
+                    new SymbolSpecification.SymbolKindOrTypeKind(SymbolKind.Local)),
+                ImmutableArray<Accessibility>.Empty,
+                ImmutableArray.Create(new SymbolSpecification.ModifierKind(SymbolSpecification.ModifierKindEnum.IsConst)));
+
+            var namingStyle = new NamingStyle(
+                Guid.NewGuid(),
+                capitalizationScheme: Capitalization.AllUpper,
+                name: "Name",
+                prefix: "",
+                suffix: "",
                 wordSeparator: "");
 
             var namingRule = new SerializableNamingRule()
